@@ -11,6 +11,8 @@ export const routes = [
     handler: (req, res) => {
       const users = database.select('users')
 
+      console.log(req.query)
+
       return res.end(JSON.stringify(users))
     }
   },
