@@ -1,23 +1,31 @@
 import http from 'node:http'
+import { json } from './middlewares/json.js'
+import { Database } from './database.js'
 
-const users = [] // Stateless - Dados salvo em memoria, onde é perdido a cada restart da aplicação / Statefull - Dados são salvos de forma externa sem perda
+// const users = [] // Stateless - Dados salvo em memoria, onde é perdido a cada restart da aplicação / Statefull - Dados são salvos de forma externa sem perda
 
-const server = http.createServer((req, res) => {
+const database = new Database()
+
+const server = http.createServer(async (req, res) => {
   const { method, url } = req
 
-  if (method === 'GET' && url === '/users') {
+  await json(req, res)
 
-    return res
-      .setHeader('Content-Type', 'application/json')
-      .end(JSON.stringify(users))
+  if (method === 'GET' && url === '/users') {
+    const users = database.select('users')
+
+    return res.end(JSON.stringify(users))
   }
 
   if (method === 'POST' && url === '/users') {
-    users.push({
+    const { name, email } = req.body
+    const user = {
       id: 1,
-      name: 'John Doe',
-      email: "John.Doe@gmail.com"
-    })
+      name: name,
+      email: email
+    }
+
+    database.insert('users', user)
 
     return res.writeHead(201).end()
   }
