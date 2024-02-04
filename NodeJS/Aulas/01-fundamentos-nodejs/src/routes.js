@@ -9,9 +9,11 @@ export const routes = [
     method: 'GET',
     path: buildRoutePath('/users'),
     handler: (req, res) => {
-      const users = database.select('users')
-
-      console.log(req.query)
+      const { search } = req.query
+      const users = database.select('users', search ? {
+        name: search,
+        email: search
+      } : null)
 
       return res.end(JSON.stringify(users))
     }
