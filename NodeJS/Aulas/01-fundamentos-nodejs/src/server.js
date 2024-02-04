@@ -1,6 +1,7 @@
 import http from 'node:http'
 import { json } from './middlewares/json.js'
 import { Database } from './database.js'
+import { randomUUID } from 'node:crypto'
 
 // const users = [] // Stateless - Dados salvo em memoria, onde é perdido a cada restart da aplicação / Statefull - Dados são salvos de forma externa sem perda
 
@@ -20,7 +21,7 @@ const server = http.createServer(async (req, res) => {
   if (method === 'POST' && url === '/users') {
     const { name, email } = req.body
     const user = {
-      id: 1,
+      id: randomUUID(),
       name: name,
       email: email
     }
