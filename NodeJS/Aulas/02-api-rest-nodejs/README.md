@@ -8,7 +8,7 @@
 # RN - Coisas que podem acontecer e devem ser validadas
 
 - [X] A transação pode ser do tipo credito que somará ao valor total, ou debíto subtrairá;
-- [ ] Deve possível identificar o usuário entre requisições;
-- [ ] O usuário só pode visualizar transações o qual ele criou;
+- [X] Deve possível identificar o usuário entre requisições;
+- [X] O usuário só pode visualizar transações o qual ele criou;
 
 # RNF
