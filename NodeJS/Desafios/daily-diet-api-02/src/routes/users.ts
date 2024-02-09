@@ -44,6 +44,7 @@ export async function usersRoutes(app: FastifyInstance) {
     }
 
     reply.cookie('sessionId', user.session_id, {
+      path: '/',
       maxAge: 60 * 60 * 24, // 1 day
     })
 
