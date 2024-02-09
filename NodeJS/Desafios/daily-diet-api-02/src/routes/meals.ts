@@ -4,6 +4,53 @@ import { z } from 'zod'
 import { checkUserIsAuthenticated } from '../middlewares/check-user-is-authenticated'
 
 export async function mealsRoutes(app: FastifyInstance) {
+  app.put(
+    '/:id',
+    { preHandler: [checkUserIsAuthenticated] },
+    async (req, reply) => {
+      const editMealBodySchema = z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        is_diet: z.boolean().optional(),
+        date: z.string().optional(),
+        hour: z.string().optional(),
+      })
+
+      const editMealQuerySchema = z.object({
+        id: z.string().uuid(),
+      })
+
+      const { name, description, is_diet, date, hour } =
+        editMealBodySchema.parse(req.body)
+
+      const { id } = editMealQuerySchema.parse(req.params)
+
+      const sessionId = req.cookies.sessionId
+
+      const meal = await knex('meals').where({
+        id,
+        session_id: sessionId,
+      })
+
+      if (!meal) {
+        return reply.status(404).send('Not Found Meal')
+      }
+
+      const updatedMeal = await knex('meals')
+        .where('id', id)
+        .update({
+          name,
+          description,
+          is_diet,
+          date,
+          hour,
+        })
+        .returning('*')
+
+      return reply.status(200).send({ updatedMeal })
+    },
+  )
+
   app.post(
     '/',
     { preHandler: [checkUserIsAuthenticated] },
@@ -11,21 +58,24 @@ export async function mealsRoutes(app: FastifyInstance) {
       const createMealsBodySchema = z.object({
         name: z.string(),
         description: z.string().optional(),
-        isDiet: z.boolean(),
+        is_diet: z.boolean(),
+        date: z.string(),
+        hour: z.string(),
       })
 
-      const { name, description, isDiet } = createMealsBodySchema.parse(
-        req.body,
-      )
+      const { name, description, is_diet, hour, date } =
+        createMealsBodySchema.parse(req.body)
 
       const sessionId = req.cookies.sessionId
 
       await knex.table('meals').insert({
         id: crypto.randomUUID(),
+        session_id: sessionId,
         name,
         description,
-        isDiet,
-        session_id: sessionId,
+        is_diet,
+        date,
+        hour,
       })
 
       return reply.status(201).send()
