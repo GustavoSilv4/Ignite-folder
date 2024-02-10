@@ -4,6 +4,37 @@ import { z } from 'zod'
 import { checkUserIsAuthenticated } from '../middlewares/check-user-is-authenticated'
 
 export async function mealsRoutes(app: FastifyInstance) {
+  app.post(
+    '/',
+    { preHandler: [checkUserIsAuthenticated] },
+    async (req, reply) => {
+      const createMealsBodySchema = z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        is_diet: z.boolean(),
+        date: z.string(),
+        hour: z.string(),
+      })
+
+      const { name, description, is_diet, hour, date } =
+        createMealsBodySchema.parse(req.body)
+
+      const sessionId = req.cookies.sessionId
+
+      await knex.table('meals').insert({
+        id: crypto.randomUUID(),
+        session_id: sessionId,
+        name,
+        description,
+        is_diet,
+        date,
+        hour,
+      })
+
+      return reply.status(201).send()
+    },
+  )
+
   app.put(
     '/:id',
     { preHandler: [checkUserIsAuthenticated] },
@@ -50,34 +81,29 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
-  app.post(
-    '/',
+  app.delete(
+    '/:id',
     { preHandler: [checkUserIsAuthenticated] },
     async (req, reply) => {
-      const createMealsBodySchema = z.object({
-        name: z.string(),
-        description: z.string().optional(),
-        is_diet: z.boolean(),
-        date: z.string(),
-        hour: z.string(),
+      const queryParamsSchema = z.object({
+        id: z.string().uuid(),
       })
 
-      const { name, description, is_diet, hour, date } =
-        createMealsBodySchema.parse(req.body)
+      const { id } = queryParamsSchema.parse(req.params)
 
       const sessionId = req.cookies.sessionId
 
-      await knex.table('meals').insert({
-        id: crypto.randomUUID(),
-        session_id: sessionId,
-        name,
-        description,
-        is_diet,
-        date,
-        hour,
-      })
+      const meal = await knex('meals')
+        .where({ session_id: sessionId, id })
+        .first()
 
-      return reply.status(201).send()
+      if (!meal) {
+        return reply.status(404).send({ error: 'Not Found Meal' })
+      }
+
+      await knex.table('meals').where('id', id).del()
+
+      return reply.status(200).send()
     },
   )
 }
