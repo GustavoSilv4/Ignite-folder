@@ -27,13 +27,12 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const sessionId = req.cookies.sessionId
 
-      const meal = await knex('meals').where({
-        id,
-        session_id: sessionId,
-      })
+      const meal = await knex('meals')
+        .where({ session_id: sessionId, id })
+        .first()
 
       if (!meal) {
-        return reply.status(404).send('Not Found Meal')
+        return reply.status(404).send({ error: 'Not Found Meal' })
       }
 
       const updatedMeal = await knex('meals')
