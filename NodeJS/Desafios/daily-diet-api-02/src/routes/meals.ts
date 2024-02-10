@@ -4,6 +4,46 @@ import { z } from 'zod'
 import { checkUserIsAuthenticated } from '../middlewares/check-user-is-authenticated'
 
 export async function mealsRoutes(app: FastifyInstance) {
+  app.get(
+    '/',
+    { preHandler: [checkUserIsAuthenticated] },
+    async (req, reply) => {
+      const sessionId = req.cookies.sessionId
+
+      const meals = await knex
+        .table('meals')
+        .where('session_id', sessionId)
+        .returning('*')
+
+      return reply.status(200).send({ meals })
+    },
+  )
+
+  app.get(
+    '/:id',
+    { preHandler: [checkUserIsAuthenticated] },
+    async (req, reply) => {
+      const GetAMealqueryParamsSchema = z.object({
+        id: z.string().uuid(),
+      })
+
+      const { id } = GetAMealqueryParamsSchema.parse(req.params)
+
+      const sessionId = req.cookies.sessionId
+
+      const meal = await knex
+        .table('meals')
+        .where({ session_id: sessionId, id })
+        .first()
+
+      if (!meal) {
+        return reply.status(404).send({ error: 'Not Found Meal' })
+      }
+
+      return reply.status(200).send({ meal })
+    },
+  )
+
   app.post(
     '/',
     { preHandler: [checkUserIsAuthenticated] },
