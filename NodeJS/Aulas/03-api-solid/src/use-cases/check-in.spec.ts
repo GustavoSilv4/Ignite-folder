@@ -99,8 +99,8 @@ describe('Check-in Use Case', async () => {
       sut.execute({
         gymId: 'gym-02',
         userId: 'user-01',
-        userLatitude: -22.967116 - 43.705902,
-        userLongitude: -22.967116 - 43.705902,
+        userLatitude: -22.967116,
+        userLongitude: 43.705902,
       }),
     ).rejects.toBeInstanceOf(Error)
   })

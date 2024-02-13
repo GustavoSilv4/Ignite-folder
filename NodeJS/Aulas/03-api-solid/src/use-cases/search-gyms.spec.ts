@@ -5,13 +5,13 @@ import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-
 let gymsRepository: InMemoryGymsRepository
 let sut: SearchGymUseCase
 
-describe('Fetch User Check-in History Use Case', async () => {
+describe('Search Gyms Use Case', async () => {
   beforeEach(async () => {
     gymsRepository = new InMemoryGymsRepository()
     sut = new SearchGymUseCase(gymsRepository)
   })
 
-  it('should be able to fetch check-in history', async () => {
+  it('should be able to search for gyms', async () => {
     await gymsRepository.create({
       title: 'Python Gym',
       description: null,
