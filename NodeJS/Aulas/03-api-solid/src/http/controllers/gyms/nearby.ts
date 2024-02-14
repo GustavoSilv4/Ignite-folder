@@ -3,16 +3,16 @@ import { z } from 'zod'
 import { makeFetchNearbyGymsUseCase } from '@/use-cases/factories/fetch-nearby-gyms-use-case'
 
 export async function nearby(req: FastifyRequest, reply: FastifyReply) {
-  const nearbyGymsBodySchema = z.object({
-    latitude: z.number().refine((value) => {
+  const nearbyGymsQuerySchema = z.object({
+    latitude: z.coerce.number().refine((value) => {
       return Math.abs(value) <= 90
     }),
-    longitude: z.number().refine((value) => {
+    longitude: z.coerce.number().refine((value) => {
       return Math.abs(value) <= 180
     }),
   })
 
-  const { latitude, longitude } = nearbyGymsBodySchema.parse(req.body)
+  const { latitude, longitude } = nearbyGymsQuerySchema.parse(req.query)
 
   const nearbyGymsUseCase = makeFetchNearbyGymsUseCase()
 
