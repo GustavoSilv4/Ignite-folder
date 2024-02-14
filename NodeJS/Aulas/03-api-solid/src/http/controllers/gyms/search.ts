@@ -5,7 +5,7 @@ import { makeSearchGymsUseCase } from '@/use-cases/factories/search-gyms-use-cas
 export async function search(req: FastifyRequest, reply: FastifyReply) {
   const searchGymsQuerySchema = z.object({
     query: z.string(),
-    page: z.coerce.number(),
+    page: z.coerce.number().min(1).default(1),
   })
 
   const { page, query } = searchGymsQuerySchema.parse(req.query)
