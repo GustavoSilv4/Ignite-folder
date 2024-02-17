@@ -29,14 +29,15 @@ model Pet {
 }
 
 model Org {
-  id                  String @id @default(uuid())
-  responsaible_person String
-  email               String
-  cep                 String
-  adress              String
-  contact             String
-  password_hash       String
-  pets                Pet[]
+  id                 String   @id @default(uuid())
+  responsible_person String
+  email              String   @unique
+  cep                String
+  adress             String
+  contact            String
+  password_hash      String
+  created_at         DateTime @default(now())
+  pets               Pet[]
 
   @@map("orgs")
 }
