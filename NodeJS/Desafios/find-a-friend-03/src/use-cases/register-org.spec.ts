@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { CreateOrgUseCase } from './register-org'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
-import { EmailAlreadyExists } from './errors/email-already-exists'
+import { EmailAlreadyExistsError } from './errors/email-already-exists-error'
 
 let orgsRepository: InMemoryOrgsRepository
 let sut: CreateOrgUseCase
@@ -55,6 +55,6 @@ describe('Create Org Use Case', () => {
         contact: '21 12345678',
         password: '123456',
       }),
-    ).rejects.toBeInstanceOf(EmailAlreadyExists)
+    ).rejects.toBeInstanceOf(EmailAlreadyExistsError)
   })
 })
