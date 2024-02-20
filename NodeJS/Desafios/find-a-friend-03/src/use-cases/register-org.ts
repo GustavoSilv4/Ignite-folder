@@ -7,6 +7,8 @@ interface CreateOrgUseCaseRequest {
   responsible_person: string
   email: string
   cep: string
+  city: string
+  state: string
   adress: string
   contact: string
   password: string

@@ -19,6 +19,8 @@ describe('Authenticate Use Case', () => {
       email: 'John.Doe@example.com',
       adress: 'Recanto dos Mares',
       cep: '12.345-678',
+      city: 'Rio de Janeiro',
+      state: 'RJ',
       contact: '21 12345678',
       password_hash: await hash('123456', 6),
     })
@@ -42,6 +44,8 @@ describe('Authenticate Use Case', () => {
       email: 'John.Doe@example.com',
       adress: 'Recanto dos Mares',
       cep: '12.345-678',
+      city: 'Rio de Janeiro',
+      state: 'RJ',
       contact: '21 12345678',
       password_hash: await hash('123456', 6),
     })
@@ -60,6 +64,8 @@ describe('Authenticate Use Case', () => {
       email: 'John.Doe@example.com',
       adress: 'Recanto dos Mares',
       cep: '12.345-678',
+      city: 'Rio de Janeiro',
+      state: 'RJ',
       contact: '21 12345678',
       password_hash: await hash('123456', 6),
     })

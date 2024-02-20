@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Pet {
-  id                    String   @id @default(uuid())
+  id                    String                @id @default(uuid())
   name                  String
   about                 String?
   age                   String
@@ -19,13 +19,31 @@ model Pet {
   energy_level          Int
   independence_level    Int
   environment_type      Int
-  image                 String?
-  requirements_adoption String[]
-  created_at            DateTime @default(now())
-  org                   Org?     @relation(fields: [orgId], references: [id])
-  orgId                 String?
+  requirements_adoption RequirementAdoption[]
+  images                PetImages[]
+  created_at            DateTime              @default(now())
+  org                   Org                   @relation(fields: [org_id], references: [id])
+  org_id                String
 
   @@map("pets")
+}
+
+model RequirementAdoption {
+  id          String @id @default(uuid())
+  requirement String
+  pet         Pet    @relation(fields: [pet_id], references: [id])
+  pet_id      String
+
+  @@map("requirementsAdoption")
+}
+
+model PetImages {
+  id     String @id @default(uuid())
+  name   String
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+  pet_id String
+
+  @@map("petImages")
 }
 
 model Org {
@@ -33,6 +51,8 @@ model Org {
   responsible_person String
   email              String   @unique
   cep                String
+  city               String
+  state              String
   adress             String
   contact            String
   password_hash      String
