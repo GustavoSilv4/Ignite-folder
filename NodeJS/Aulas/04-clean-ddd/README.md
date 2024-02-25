@@ -16,6 +16,7 @@ Design dirigido à domínio
   - Barman
 
 - Agregados
+- Watched List
 - Value Objects
 - Eventos de domínio
 - Subdomínios (Bounded Contexts)
