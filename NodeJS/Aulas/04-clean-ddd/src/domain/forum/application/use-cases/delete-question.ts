@@ -1,3 +1,4 @@
+import { Either, left, right } from '@/domain/core/either'
 import { QuestionsRepository } from '../repositories/questions-repository'
 
 interface DeleteQuestionUseCaseRequest {
@@ -5,7 +6,7 @@ interface DeleteQuestionUseCaseRequest {
   questionId: string
 }
 
-interface DeleteQuestionUseCaseResponse {}
+type DeleteQuestionUseCaseResponse = Either<string, object>
 
 export class DeleteQuestionUseCase {
   // eslint-disable-next-line no-useless-constructor
@@ -17,13 +18,12 @@ export class DeleteQuestionUseCase {
   }: DeleteQuestionUseCaseRequest): Promise<DeleteQuestionUseCaseResponse> {
     const question = await this.questionsRepository.findById(questionId)
 
-    if (!question) throw new Error('Question not found.')
+    if (!question) return left('Question not found.')
 
-    if (authorId !== question.authorId.toString())
-      throw new Error('Not Allowed')
+    if (authorId !== question.authorId.toString()) return left('Not Allowed')
 
     await this.questionsRepository.delete(question)
 
-    return {}
+    return right({})
   }
 }
