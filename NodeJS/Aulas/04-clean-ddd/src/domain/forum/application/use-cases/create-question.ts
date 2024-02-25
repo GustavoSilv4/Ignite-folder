@@ -1,6 +1,7 @@
 import { UniqueEntityID } from '@/domain/core/entities/unique-entity-id'
 import { Question } from '../../enterprise/entities/question'
 import { QuestionsRepository } from '../repositories/questions-repository'
+import { Either, right } from '@/domain/core/either'
 
 interface CreateQuestionUseCaseRequest {
   authorId: string
@@ -8,9 +9,12 @@ interface CreateQuestionUseCaseRequest {
   content: string
 }
 
-interface CreateQuestionUseCaseResponse {
-  question: Question
-}
+type CreateQuestionUseCaseResponse = Either<
+  null,
+  {
+    question: Question
+  }
+>
 
 export class CreateQuestionUseCase {
   // eslint-disable-next-line no-useless-constructor
@@ -29,8 +33,8 @@ export class CreateQuestionUseCase {
 
     await this.questionsRepository.create(question)
 
-    return {
+    return right({
       question,
-    }
+    })
   }
 }

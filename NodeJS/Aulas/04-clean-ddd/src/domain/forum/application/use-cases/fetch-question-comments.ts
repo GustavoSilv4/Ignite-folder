@@ -1,3 +1,4 @@
+import { Either, right } from '@/domain/core/either'
 import { QuestionComment } from '../../enterprise/entities/question-comment'
 import { QuestionCommentsRepository } from '../repositories/question-comments-repository'
 
@@ -6,9 +7,12 @@ interface FetchQuestionCommentsUseCaseRequest {
   page: number
 }
 
-interface FetchQuestionCommentsUseCaseResponse {
-  questionComments: QuestionComment[]
-}
+type FetchQuestionCommentsUseCaseResponse = Either<
+  null,
+  {
+    questionComments: QuestionComment[]
+  }
+>
 
 export class FetchQuestionCommentsUseCase {
   // eslint-disable-next-line no-useless-constructor
@@ -23,8 +27,8 @@ export class FetchQuestionCommentsUseCase {
         page,
       })
 
-    return {
+    return right({
       questionComments,
-    }
+    })
   }
 }

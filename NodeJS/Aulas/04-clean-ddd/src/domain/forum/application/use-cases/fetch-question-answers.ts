@@ -1,3 +1,4 @@
+import { Either, right } from '@/domain/core/either'
 import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
 
@@ -6,9 +7,12 @@ interface FetchQuestionAnswersUseCaseRequest {
   page: number
 }
 
-interface FetchQuestionAnswersUseCaseResponse {
-  answers: Answer[]
-}
+type FetchQuestionAnswersUseCaseResponse = Either<
+  null,
+  {
+    answers: Answer[]
+  }
+>
 
 export class FetchQuestionAnswersUseCase {
   // eslint-disable-next-line no-useless-constructor
@@ -23,8 +27,8 @@ export class FetchQuestionAnswersUseCase {
       { page },
     )
 
-    return {
+    return right({
       answers,
-    }
+    })
   }
 }
