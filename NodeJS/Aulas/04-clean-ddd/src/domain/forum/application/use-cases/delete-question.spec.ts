@@ -1,12 +1,12 @@
 import { InMemoryQuestionsRepository } from '@/test/repositories/in-memory-questions-repository'
-import { makeQuestion } from '@/test/factories/make-questions'
+import { makeQuestion } from '@/test/factories/make-question'
 import { DeleteQuestionUseCase } from './delete-question'
 import { UniqueEntityID } from '@/domain/core/entities/unique-entity-id'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let sut: DeleteQuestionUseCase
 
-describe('Delete Question By Slug', () => {
+describe('Delete Question', () => {
   beforeEach(() => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
