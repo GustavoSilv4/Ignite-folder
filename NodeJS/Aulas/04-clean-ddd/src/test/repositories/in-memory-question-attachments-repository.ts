@@ -14,15 +14,11 @@ export class InMemoryQuestionAttachmentsRepository
     return questionAttachments
   }
 
-  async create(questionAttachment: QuestionAttachment) {
-    this.items.push(questionAttachment)
-  }
-
-  async delete(questionAttachment: QuestionAttachment) {
-    const itemIndex = this.items.findIndex(
-      (item) => item.id === questionAttachment.id,
+  async deleteManyByQuestionId(questionId: string) {
+    const questionAttachments = this.items.filter(
+      (items) => items.questionId.toString() !== questionId,
     )
 
-    this.items.splice(itemIndex, 1)
+    this.items = questionAttachments
   }
 }
