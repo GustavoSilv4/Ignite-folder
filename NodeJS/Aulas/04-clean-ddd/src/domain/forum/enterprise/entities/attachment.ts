@@ -1,5 +1,5 @@
-import { Entity } from '@/domain/core/entities/entity'
-import { UniqueEntityID } from '@/domain/core/entities/unique-entity-id'
+import { Entity } from '@/core/entities/entity'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface AttachmentProps {
   title: string

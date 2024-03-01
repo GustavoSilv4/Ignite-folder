@@ -1,6 +1,6 @@
-import { Entity } from '@/domain/core/entities/entity'
-import { UniqueEntityID } from '@/domain/core/entities/unique-entity-id'
-import { Optional } from '@/domain/core/types/optional'
+import { Entity } from '@/core/entities/entity'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { Optional } from '@/core/types/optional'
 
 export interface NotificationProps {
   recipientId: UniqueEntityID
