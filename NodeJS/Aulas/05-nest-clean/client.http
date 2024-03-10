@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-@accessToken = {{authenticate.response.body.accessToken}}
+@accessToken = {{authenticate.response.body.access_token}}
 
 # @name create_account
 
@@ -8,7 +8,7 @@ Content-Type:  application/json
 
 {
   "name": "Gustavo Silva",
-  "email": "gustavo4@gmail.com",
+  "email": "gustavo20@gmail.com",
   "password": "123456"
 }
 
@@ -20,7 +20,7 @@ POST  {{baseUrl}}/sessions
 Content-Type:  application/json
 
 {
-  "email": "gustavo4@gmail.com",
+  "email": "gustavo20@gmail.com",
   "password": "123456"
 }
 
