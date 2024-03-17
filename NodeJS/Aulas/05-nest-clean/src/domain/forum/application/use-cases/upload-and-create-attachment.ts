@@ -2,7 +2,7 @@ import { Either, left, right } from 'src/core/either'
 import { Injectable } from '@nestjs/common'
 import { InvalidAttachmentTypeError } from './errors/invalid-attachment-type-error'
 import { Attachment } from '../../enterprise/entities/attachment'
-import { AttachmentRepository } from '../repositories/attachments-repository'
+import { AttachmentsRepository } from '../repositories/attachments-repository'
 import { Uploader } from '../storage/uploader'
 
 interface UploadAndCreateAttachmentUseCaseRequest {
@@ -21,7 +21,7 @@ type UploadAndCreateAttachmentUseCaseResponse = Either<
 @Injectable()
 export class UploadAndCreateAttachmentUseCase {
   constructor(
-    private attachmentRepository: AttachmentRepository,
+    private attachmentsRepository: AttachmentsRepository,
     private uploader: Uploader,
   ) {}
 
@@ -45,7 +45,7 @@ export class UploadAndCreateAttachmentUseCase {
       url,
     })
 
-    await this.attachmentRepository.create(attachment)
+    await this.attachmentsRepository.create(attachment)
 
     return right({
       attachment,
